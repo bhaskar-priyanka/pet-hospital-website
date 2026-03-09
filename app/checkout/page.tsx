@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -47,6 +47,11 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [orderPlaced, setOrderPlaced] = useState(false)
   const [orderId, setOrderId] = useState("")
+  useEffect(() => {
+  if (!user) {
+    router.push("/login")
+  }
+}, [user, router])
   
   const [shippingAddress, setShippingAddress] = useState({
     fullName: user?.name || "",
@@ -70,9 +75,8 @@ export default function CheckoutPage() {
   const total = totalPrice + shipping
 
   if (!user) {
-    router.push("/login")
-    return null
-  }
+  return null
+}
 
   if (items.length === 0 && !orderPlaced) {
     return (
